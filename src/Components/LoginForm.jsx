@@ -5,8 +5,12 @@ import Box from "@mui/material/Box";
 import { Button, FormControl, IconButton, InputAdornment, InputLabel, OutlinedInput, TextField, Typography } from "@mui/material";
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
+import { useHistory } from 'react-router-dom';
+import { toast } from 'react-toastify'; // Import toast
 
 const LoginForm = () => {
+  const history = useHistory(); // Initialize useHistory
+  
   const validationSchema = yup.object({
     email: yup.string().email("Invalid email format").required("Email is required"),
     password: yup.string().required("Password is required"),
@@ -34,14 +38,15 @@ const LoginForm = () => {
         // Check if the provided email and password match the valid credentials
         if (values.email === validEmail && values.password === validPassword) {
           console.log("Login successful!");
-          alert("Login successful!"); // Replace with your actual success handling
+          toast.success('Login successful!'); // Display success notification
+          history.push("/Dashboard"); // Redirect to the dashboard upon successful login
         } else {
           console.error("Invalid email or password");
-          alert("Invalid email or password. Please try again."); // Replace with your actual error handling
+          toast.error('Invalid email or password. Please try again.'); // Display error notification
         }
       } catch (error) {
         console.error("Authentication failed:", error.message);
-        alert("Login failed. Please check your credentials."); // Replace with your actual error handling
+        toast.error('Login failed. Please check your credentials.'); // Display error notification
       }
     },
   });
